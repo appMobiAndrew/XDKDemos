@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html><!--
+ Copyright (c) 2011, 2012, 2013 Intel Corporation
+
+ Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation
+ files (the "Software"), to deal in the Software without
+ restriction, including without limitation the rights to use,
+ copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the
+ Software is furnished to do so, subject to the following
+ conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ OTHER DEALINGS IN THE SOFTWARE.
+-->
+    <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+
+    <title>Podcast</title>
+
+    <script type="text/javascript" src="http://localhost:58888/_appMobi/appmobi.js"></script>
+
+        <style type="text/css">
+        * { -webkit-user-select:none; -webkit-tap-highlight-color:rgba(255, 255, 255, 0); -ms-touch-action:none;} 
+        input, textarea  { -webkit-user-select:text; } 
+        body {
+            color:black;
+            font-family:Arial;
+            background-color: #000;
+        }
+        #podcastEpisodes {
+            padding: 0px;
+            background-color: #006b84;
+            -webkit-border-top-left-radius: 30px;
+            -webkit-border-top-right-radius: 30px;
+            color: #FFF;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        #podcastTitle {
+            color: #000;
+            margin-bottom: 20px;
+            -webkit-border-radius: 10px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            font-size: 36px;
+            height: 50px;
+            background-color: #91E04D;
+        }
+        .ListItem {
+            background-image: url(images/grad.png);
+            background-repeat: repeat-x;
+            height: 75px;
+            margin: 0px;
+            padding-top: 0px;
+            padding-right: 0px;
+            padding-bottom: 0px;
+            padding-left: 20px;
+            -webkit-border-top-left-radius: 30px;
+            -webkit-border-top-right-radius: 30px;
+        }
+        .header {
+            background-image: url(images/podcast_header.gif);
+            height: 136px;
+            width: 768px;
+        }
+        </style>
+
+
+        <script language="javascript" type="text/javascript">
+        //global variables
+		
+		//Frank DeFord's NPR Sports podcast
+        var podcastRSSURL = "http://www.npr.org/rss/podcast.php?id=4499275";
+		
+		//Chinese History - English
+		//var podcastRSSURL = "http://feeds.feedburner.com/chinahistorypodcast?format=xml";
+		
+		//World Football
+		//var podcastRSSURL = "http://downloads.bbc.co.uk/podcasts/worldservice/wswf/rss.xml";
+
+		//BBC - Chinese Podcast of the Day
+		//var podcastRSSURL = "http://downloads.bbc.co.uk/podcasts/worldservice/podcastoftheday/rss.xml";
+		
+        var feedTimeout;
+        
+        var iPortraitWidth=768;
+        var iLandscapeWidth=1024;
+        
+        var previousXMLData;
+        var xmlhttp = null;
+        var boolDebounce = false;
+
+
+        
+        function dataFailed(xmlData)
+        {
+			console.log("dataFailed");
+            AppMobi.notifications.alert(xmlData,"Podcast Failure","OK");
+        }
+                        
+        function dataLoaded(strRequestResponse)
+        {
+            var parser=new DOMParser();
+            xmlData=parser.parseFromString(strRequestResponse,"text/xml");
+            xmlData.alltext = strRequestResponse; 
+            
+            if (xmlData != null) {previousXMLData = xmlData;} else {xmlData = previousXMLData;}
+
+            if (xmlData!=null)
+            {
+                var outHTML = ""; 
+                document.getElementById("podcastTitle").innerHTML = xmlData.getElementsByTagName("title")[0].childNodes[0].nodeValue;
+
+                outHTML += "<table class=\"episodes\">";
+
+                var nodeList;
+                nodeList = xmlData.getElementsByTagName("channel");
+                                  
+                if (nodeList.length > 0)
+                {
+                    for (var i=0; i<nodeList.length; i++)
+                    {
+                        if (nodeList.item(i).getElementsByTagName("item").length >= 1)
+                        {
+                            for (var ii=0; ii<nodeList.item(i).getElementsByTagName("item").length; ii++)
+                            {
+                                var selNode = nodeList.item(i).getElementsByTagName("item").item(ii);
+                                var strTitle = "";
+                                var strPodcastLink = "";
+                                var strPodcastMP3 = "";
+                                var strNodeIcon = "";
+                                
+                                for (var x=0;x<selNode.childNodes.length; x++)
+                                {
+                                    if (selNode.childNodes[x].nodeName == "title")
+                                    {
+                                        strTitle = selNode.childNodes[x].childNodes[0].nodeValue;
+                                    } 
+                                    
+                                    if (selNode.childNodes[x].nodeName == "enclosure")
+                                    {
+                                        strPodcastMP3 = selNode.childNodes[x].getAttribute("url");
+                                    }  
+                                    
+                                    if (selNode.childNodes[x].nodeName == "link")
+                                    {
+                                        strPodcastLink = selNode.childNodes[x].childNodes[0].nodeValue;
+                                    }       
+                                }
+                                outHTML += "<table width=\"100%\" onclick=\"playPodcast('" + strPodcastMP3 + "');\">";
+                                
+                                outHTML += "<tr>"; 
+                                
+                                outHTML += "<td class=\"ListItem\" align=\"left\" valign=\"middle\">";
+                                outHTML += strTitle;
+                                outHTML += "</td>";
+                                outHTML += "</tr></table>";
+                            }
+                        }
+                    }
+                    outHTML += "</table>";
+                    document.getElementById("podcastEpisodes").innerHTML = outHTML
+                }
+            }
+        }
+    
+        function playPodcast(podcastURL)
+        {
+            try
+            {
+                if (boolDebounce == false)
+                {
+                    boolDebounce = true;
+                
+                    //load the podcast
+                    AppMobi.player.playPodcast(podcastURL);
+                    setTimeout("boolDebounce = false",5000);
+                }
+            }
+            catch(e){ alert("error in playpodcast: " + e.message); }
+        }
+
+        
+        //*** Device Ready Code *******************
+        //This event handler is fired once the AppMobi libraries are ready
+        function onDeviceReady()
+        {
+            //use AppMobi viewport
+            AppMobi.display.useViewport(iPortraitWidth,iLandscapeWidth);
+        
+            //lock orientation
+            AppMobi.device.setRotateOrientation("portrait");
+            AppMobi.device.setAutoRotate(false);
+            
+            //manage power
+            AppMobi.device.managePower(true,false);
+                
+            try
+            {
+                //for playing podcasts
+                document.addEventListener("appMobi.player.audio.stop",onPodcastComplete,false);
+                document.addEventListener("appMobi.player.audio.error",onPodcastError,false);
+            }
+            catch(e){}
+			
+			//hide splash screen
+			AppMobi.device.hideSplashScreen();
+
+            if (AppMobi.device.appmobiversion != "3.2.4")
+            {
+                AppMobi.device.getRemoteData(podcastRSSURL,"GET","","dataLoaded","dataFailed");
+            }
+            else
+            {
+                //********* Use XMLHTTP on an error ***************
+                    try
+                    {
+                        xmlhttp = new XMLHttpRequest(); // instantiate it
+                    }
+                    catch (err)
+                    { 
+                        alert("Error initializing XMLHttpRequest.\n"+ err); // show error
+                    }
+                    xmlhttp.onreadystatechange = function()
+                    {
+                        if (xmlhttp.readyState == 4) 
+                        {
+
+                            if(xmlhttp.status == 200 || xmlhttp.responseText != "")
+                            {
+                                //XML file read, now parse it
+                                dataLoaded(xmlhttp.responseText);
+                            }
+                        }
+                    }
+                    try
+                    {
+                        xmlhttp.open('GET', podcastRSSURL); // open server interface
+                    }
+                    catch (err)
+                    {
+                        alert("XMLHttpRequest.open() failed.\n"+err.message + " \n URL : " + podcastRSSURL); //Permission Denied
+                        return;
+                    }
+                    xmlhttp.send(null);
+
+                //***************************************
+            }
+        }
+        
+        //initial event handler to detect when appMobi is ready to roll
+        document.addEventListener("appMobi.device.ready",onDeviceReady,false);
+        
+        //*** Prevent Default Scrolling ******
+        preventDefaultScroll = function(event) {
+            // Prevent scrolling on this element
+            event.preventDefault();
+            window.scroll(0, 0);
+            return false;
+        };
+
+        window.document.addEventListener('touchmove', preventDefaultScroll, false);
+        
+        
+        //*** Audio Code ******************
+        
+        function onPodcastComplete()
+        {}
+        
+        function onPodcastError()
+        {}
+     
+        </script>
+		
+    </head>
+    <body style="width:100%;height:100%;font-family:Arial;">
+<center>
+<div class="header"></div>
+    <div id="podcastTitle" style="width:95%; text-align:center; font-weight:bold;"></div>
+    <div id="podcastEpisodes" style="position:absolute;top:220px;width:768px; height:782px; overflow:hidden;">
+    </div>
+    
+</center>
+</body>
+</html>

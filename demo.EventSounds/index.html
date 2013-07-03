@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<!--
+Copyright (c) 2011, 2012, 2013 Intel Corporation
+
+ Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation
+ files (the "Software"), to deal in the Software without
+ restriction, including without limitation the rights to use,
+ copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the
+ Software is furnished to do so, subject to the following
+ conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ OTHER DEALINGS IN THE SOFTWARE.
+-->
+    <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+
+    <title>Event Sounds</title>
+
+        <script type="text/javascript" charset="utf-8" src="http://localhost:58888/_appMobi/appmobi.js"></script>
+
+        <style type="text/css">
+        * { -webkit-user-select:none; -webkit-tap-highlight-color:rgba(255, 255, 255, 0); -ms-touch-action:none;} 
+        input, textarea  { -webkit-user-select:text; } 
+		
+        </style>
+
+
+        <script language="javascript" type="text/javascript">
+        //global variables
+        var iPortraitWidth=768;
+        var iLandscapeWidth=1024;
+        
+        //*** Audio Code ******************
+		function playSound() {
+			AppMobi.player.playSound("sounds/cowbell.mp3");
+			//AppMobi.player.playSound("sounds/catmeow2.mp3");
+		}
+		
+        function doRandomSound()
+        {
+            console.log("in doRandomSound",4);
+            try
+            {
+                if (rnd(10)==0)
+                {
+                    AppMobi.player.playSound("sounds/catmeow2.mp3");
+                }
+                else
+                {
+                    AppMobi.player.playSound("sounds/cowbell.mp3");
+                }
+            }
+            catch(e)
+            {
+                console.log("error in doRandomSound: " + e.message);
+            }
+        
+        }
+        
+        //random number generator
+        function rnd(i)
+        {
+            return Math.floor(Math.random()*i);
+        }
+        
+        //*** Device Ready Code **********
+        //This event handler is fired once the AppMobi libraries are ready
+        //AppMobi is ready to roll
+        function onDeviceReady()
+        {
+            //use AppMobi viewport
+            AppMobi.display.useViewport(iPortraitWidth,iLandscapeWidth);
+        
+            //lock orientation
+            AppMobi.device.setRotateOrientation("portrait");
+            AppMobi.device.setAutoRotate(false);
+            
+            //manage power
+            AppMobi.device.managePower(true,false);
+			
+			//hide splash screen
+			AppMobi.device.hideSplashScreen();
+		}
+        
+        //initial event handler to detect when appMobi is ready to roll
+        document.addEventListener("appMobi.device.ready",onDeviceReady,false); 
+        
+
+        //*** Prevent Default Scroll ******
+        preventDefaultScroll = function(event) {
+            // Prevent scrolling on this element
+            event.preventDefault();
+            window.scroll(0,0);
+            return false;
+        };
+        
+        window.document.addEventListener('touchmove', preventDefaultScroll, false);
+        
+        </script>
+      
+  	</head>
+    <body onload="" style="font-family:Arial; background-image:url('images/app_bg.jpg');background-repeat:no-repeat;" >
+
+    <img src="images/cowbell.png" style="position:absolute;top:101px;left:115px;" ontouchstart="playSound();" />
+    
+    <span id="txtInfo" style="position:absolute; bottom:20px; left:0px; width:768px; text-align:center; font-family:Arial; font-size:36px; color:white;background-color:#000;opacity:.75;">
+    Tap the cowbell to hear sounds.</span>
+    
+    
+    </body>
+</html>

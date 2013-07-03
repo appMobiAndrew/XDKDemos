@@ -1,0 +1,436 @@
+﻿<!DOCTYPE html><!--HTML5 doctype-->
+<html>
+    <head>
+        <title>Powered by appStarter</title>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <style>
+            
+        </style>
+        <!--<link rel='stylesheet' type='text/css' href='css/jq.ui.carbon.css' />-->
+        <link rel='stylesheet' type='text/css' href='css/jq.ui.newtheme.css' />
+        <link rel="stylesheet" type="text/css" href="css/icons.css">
+        <script type="text/javascript" charset="utf-8" src="http://localhost:58888/_appMobi/appmobi.js"></script> 
+        <script type="text/javascript" charset="utf-8" src="http://localhost:58888/_appMobi/xhr.js"></script>  
+        <script type="text/javascript" charset="utf-8" src="libs/jq.ui.min.js"></script> 
+        <script type="text/javascript" charset="utf-8" src="libs/jq.web.min.js"></script> 
+        <script type="text/javascript" charset="utf-8" src="libs/xpromo.js"></script> 
+        <script type="text/javascript" charset="utf-8" src="libs/subtledata.js"></script> 
+
+        
+        <script type="text/javascript">
+	/* Set up SubtleData library */
+	var subtleDataApiKey = 'QjIrMk02';
+	var subtleDataUsername = 'demouser';
+	var subtleDataPassword = 'demopass';
+	var subtleDataDeviceGuid = '1';
+	var subtleData = new SubtleData(subtleDataApiKey);
+	subtleData.debug = true;
+
+        /* This function runs once the page is loaded, but appMobi is not yet active */
+        var preroll=false;
+        $.ui.autoLaunch=false;
+        var init = function(){
+	$.ui.backButtonText = "Back";
+        };
+        document.addEventListener("DOMContentLoaded",init,false);  
+
+
+
+        /* This code is used to run as soon as appMobi activates */
+        var onDeviceReady=function(){
+            AppMobi.device.setRotateOrientation("portrait");
+            AppMobi.device.setAutoRotate(false);
+            //hide splash screen
+            AppMobi.device.hideSplashScreen();	
+            
+            
+            if(preroll){
+                AppMobiPromotion.getInterstitial();
+            }
+	    $.ui.isAjaxApp=true;
+            $.ui.launch();
+
+	    // Connect to the SubtleData server
+	    subtleData.startup(function(){
+	        // Log in the demo employee
+	        subtleData.authenticateUser(subtleDataUsername, 
+	                                    subtleDataPassword, 
+                                            subtleDataDeviceGuid, 
+                                            function(response){ 
+	            // Find a default location to use for this demo
+	            subtleData.findLocations(function(response){ 
+	                subtleData.locationId = response[0].locationId;
+	                // Pick a Revenue Center
+	                subtleData.getRevenueCenters(function(response){
+	                    subtleData.revenueCenterId = response[0].revenueCenterId;
+	                    // Pick a table
+	                    subtleData.listTables(function(tables){
+	                        subtleData.tableId = tables[0].tableId;
+	                        // Create a new ticket
+	                        subtleData.createTicketForDineIn(
+	                            2,
+	                            function(response){
+	                                // Get list of item categories
+	                                subtleData.getCategories(0, function(categories){
+                                            subtleData.categories = categories;
+	                                    writeCategoryList(subtleData.categories);
+	                                });
+	                            },
+	                            function(response){
+	                                alert("Error creating ticket: " + response.errorCode);
+	                            }
+                                );
+	                    });
+	                });
+	            });
+    	        },
+	        //Login error
+	        function(response){
+	            switch(response.errorCode)
+	            {
+	            case 0:
+                        alert("Authentication error: General failure. Try again.");
+	                break;
+	            case -1:
+                        alert("Authentication error: Username missing.");
+	                break;
+	            case -2:
+                        alert("Authentication error: Password not long enough.");
+	                break;
+	            case -5:
+                        alert("Authentication error: Unique Identifier not passed.");
+	                break;
+	            case -100:
+                        alert("Authentication error: Not using HTTPS.");
+	                break;
+	            default:
+                        alert("An unknown error occurred while logging in");
+	            }
+                });
+            });
+        };
+        document.addEventListener("appMobi.device.ready",onDeviceReady,false);    
+
+	function writeCategoryList(categories) {
+	    var list = $('#categoryList');
+	    for (var i = 0; i < categories.length; i++) {
+		var categoryId = categories[i].categoryId;
+		var categoryName = categories[i].name;
+		var categoryDescription = categories[i].instructionalText;
+		var title = document.createTextNode(categoryName);
+		var a = document.createElement('a');
+		a.href = "#category-"+categoryId;
+	        a.appendChild(title);
+	        var li = document.createElement('li');
+		li.appendChild(a);
+	        list.append(li);
+
+		writeItemList(categories[i]);
+            }
+	    $('.loading').hide();
+	}
+
+	function writeItemList(category) {
+	    var categoryId = category.categoryId;
+	    var categoryName = category.name;
+	    var categoryDescription = category.instructionalText;
+
+	    var div = document.createElement('div');
+	    div.id = "category-"+categoryId;
+	    div.title = categoryName;
+            div.className = "panel";
+            div.scrolling = "yes";
+	    var ul = document.createElement('ul');
+	    div.appendChild(ul);
+            $('#content').append(div);
+
+	    subtleData.getItemsByCategory(categoryId, function(items){
+		for (var i=0; i < items.length; i++) {
+	            var itemId = items[i].itemId;
+                    var itemName = items[i].name;
+                    var itemPrice = items[i].price;
+
+		    var title = document.createTextNode(itemName);
+		    var a = document.createElement('a');
+		    a.href = "#item-"+itemId;
+	            a.appendChild(title);
+	            var li = document.createElement('li');
+		    li.appendChild(a);
+                    ul.appendChild(li);
+
+		    writeItemPage(items[i], categoryName);
+		}
+	    });
+	}
+
+	function writeItemPage(item, categoryName) {
+	    var itemId = item.itemId;
+	    var itemName = item.name;
+            var itemPrice = item.price;
+
+	    var div = document.createElement('div');
+	    div.id = "item-"+itemId;
+	    div.title = itemName;
+            div.className = "panel itemPanel";
+            div.scrolling = "yes";
+
+      var catName = document.createTextNode(categoryName);
+      var h3 = document.createElement('h3');
+      h3.appendChild(catName);
+      div.appendChild(h3);
+
+	    var name = document.createTextNode(itemName);
+	    var h1 = document.createElement('h1');
+	    h1.appendChild(name);
+            div.appendChild(h1);
+	    var price = document.createTextNode("$"+itemPrice);
+	    var priceDiv = document.createElement('div');
+	    priceDiv.className = 'price';
+	    priceDiv.appendChild(price);
+            div.appendChild(priceDiv);
+            $('#content').append(div);
+
+	    subtleData.getItemModifiers(itemId, function(modifiers){
+	        if (modifiers.length > 0) {
+			var h2 = document.createElement('h2');
+			var txt = document.createTextNode("Choose from the options below:");
+			h2.appendChild(txt);
+			div.appendChild(h2);
+		}
+		for (var i=0; i < modifiers.length; i++) {
+	            var modifierId = modifiers[i].categoryId;
+                    var modifierName = modifiers[i].name;
+                    var modifierDescription = modifiers[i].description;
+
+	            var pm = document.createElement('p');
+		    var mname = document.createTextNode(modifierName);
+	            var h3 = document.createElement('h3');
+		    h3.appendChild(mname);
+		    pm.appendChild(h3);
+		    // var description = document.createTextNode(modifierDescription);
+		    // pm.appendChild(description);
+	            var span = document.createElement('span');
+		    span.className = "select";
+	            var select = document.createElement('select');
+		    select.name = "modifier-"+modifierId;
+		    select.id = "modifier-"+modifierId;
+		    select.className = "modifierSelect";
+		    span.appendChild(select);
+		    div.appendChild(pm);
+		    div.appendChild(span);
+
+		    var modListCollection = modifiers[i].modifierList;
+		    for (var j=0; j < modListCollection.length; j++) {
+	                var modifierOptionId = modListCollection[j].modifierId;
+	                var modifierOptionName = modListCollection[j].name;
+	                var modifierOptionDescription = modListCollection[j].description;
+			/*
+		        var modOpDescription = document.createTextNode(modifierOptionDescription);
+	                var li = document.createElement('li');
+                        li.appendChild(modOpDescription);
+                        ul.appendChild(li);
+			*/
+		        var modOpName = document.createTextNode(modifierOptionName);
+		        var modOpOption = document.createElement("option");
+			modOpOption.value = modifierOptionId;
+			modOpOption.appendChild(modOpName);
+			select.appendChild(modOpOption);
+                    }
+		    $.selectBox.getOldSelects("modifier-"+modifierId);
+
+		    var choose = document.createElement("input");
+		    choose.id = "choose-"+itemId;
+		    choose.type = "button";
+                    choose.value = "Add to your order";
+		    choose.className = "button";
+		    div.appendChild(choose);
+		    if (choose.addEventListener) {
+			choose.addEventListener("click", addToOrder, false);
+		    } else {
+			choose.attachEvent('onclick', addToOrder);
+		    }
+		}
+	    });
+	}
+
+	function addToOrder(event) {
+		var id = event.target.id;
+		var itemId = id.substring(id.indexOf("-")+1);
+		var modifierIds = $("#item-"+itemId+" .modifierSelect").val();
+	        subtleData.addItemToTicket(itemId, 1, [modifierIds], function(results){
+			alert("The item has been added to your order");
+		});
+	}
+
+	function showHome(div) {
+	        $('#backButton').show();
+	}
+
+	function showOrder(div) {
+	        var itemsToOrderList = $('#itemsToOrder');
+	        var itemsOrderedList = $('#itemsOrdered');
+		itemsToOrderList.html("");
+	        $('#backButton').hide();
+	        subtleData.getItemsToOrder(function(items){
+			for (var i=0; i < items.length; i++) {
+				var item = items[i];
+				var itemText = document.createTextNode(item.name);
+        console.log(item);
+        console.log(item.name);
+        console.log(item.modifierList[0].name);
+				// var li = document.createElement('li');
+				// li.appendChild(itemText);
+        itemsToOrderList.append(
+        $('<li><h5>'+item.name+'</h5><h6>'+item.modifierList[0].name+'</h6></li>').addClass('review-order-item')
+        );
+			}
+			if (items.length > 0) {
+				$('#placeOrderButton').show();
+			} else {
+				$('#placeOrderButton').hide();
+			}
+		});
+		loadOrder('#itemsOrdered', '#totalPrice', '#payBillButton');
+	}
+
+        function placeOrder(event) {
+		subtleData.placeCurrentOrder(function(response) {
+			alert("Your food is on its way!");
+			$('#placeOrderButton').hide();
+			$.ui.loadContent('main', false, false, 'fade');
+		});
+	}
+
+	function showBill(div) {
+		loadOrder('#billList', '#totalBillPrice', '#authorizePaymentButton', '#formAmount');
+	}
+
+	function loadOrder(listId, priceId, buttonId, amountId) {
+	        var itemsOrderedList = $(listId);
+		itemsOrderedList.html("");
+	        subtleData.getTicketItems(function(items){
+			var total = 0;
+			for (var i=0; i < items.length; i++) {
+				var item = items[i];
+			        var itemPrice = item.price*item.quantity;
+				total += itemPrice;
+				// var itemString = item.name + " with " + item.modifierList[0].name + ", Price: $" + itemPrice.toFixed(2);
+				// var itemText = document.createTextNode(itemString);
+				// var li = document.createElement('li');
+				// li.appendChild(itemText);
+				// itemsOrderedList.append(li);
+        itemsOrderedList.append(
+        $('<li><h5>'+item.name+'</h5><h6>'+item.modifierList[0].name+'</h6><span>$'+itemPrice.toFixed(2)+'</span></li>').addClass('review-order-item')
+        );
+			}
+			if (items.length > 0) {
+				$(buttonId).show();
+				$(priceId).html("Total: $"+total.toFixed(2));
+				$(priceId).show();
+			} else {
+				$(buttonId).hide();
+				$(priceId).hide();
+			}
+			if (amountId) {
+				$(amountId).val(total.toFixed(2));
+			}
+		});
+	}
+
+	function authorizePayment() {
+		var name = $('#formName').val();
+		var card = $('#formCard').val();
+		var month = $('#formMonth').val();
+		var year = $('#formYear').val();
+		var zip = $('#formZip').val();
+	        subtleData.addPaymentMethod(name, card, month, year, zip, function(response) {
+		    var cardId = response.cardId;
+		    var amount = $('#formAmount').val();
+		    var tip = $('#formTip').val();
+		    var cvv = $('#formCvv').val();
+	            subtleData.addPaymentToTicket(cardId, amount, tip, cvv, function(response) {
+		           alert("DEMO MODE: No charge was made.\nThanks for dining and come again!")
+	                   subtleData.createTicketForDineIn(
+	                            2,
+	                            function(response){
+				      $('input[type="text"]').val("");
+				      $('#totalPrice').hide();
+				      $('#payBillButton').hide();
+				      $.ui.loadContent('main', false, false, 'slide');
+				    }
+			   );
+		        }, function(response) {
+			   alert("Error processing your payment: "+response.errorCode+" - "+response.responseMessage);
+		    });
+	        });
+	}
+        </script>
+
+    </head>
+    <body>
+        <div id="jQUi">
+            <div id="splashscreen" class='ui-loader'>
+                <span class='ui-icon ui-icon-loading spin'></span><h1 >Starting app</h1>
+            </div>
+            
+            <div id="header"><div class="logo"></div></div>
+            <div id="content">
+                <div id='main' title='SubtleData Café' selected=true class='panel' data-load='showHome'>
+   <h4>Place your order</h4>
+   <ul id="categoryList">
+    </ul>
+   <div class="loading">Loading menu...</div>
+    </div>
+
+                <div id='ReviewOrder' title='Review Your Order' class='panel' data-load='showOrder'>
+   <h3>Review Your Order:</h3>
+   <ul id="itemsToOrder" class="orderList">
+    </ul>
+   <input type="button" class="button" id="placeOrderButton" style="display: none;" value="Place your order" onclick="return placeOrder();"/>
+   <h3 class='items-ordered-header'>Items ordered:</h3>
+   <ul id="itemsOrdered" class="orderList">
+    </ul>
+   <div class="totalPrice" id="totalPrice" style="display: none;">
+   </div>
+   <input type="button" class="button" id="payBillButton" style="display: none;" value="Pay your bill" onclick="$.ui.loadContent('PayBill', false, false, 'slide');"/>
+    </div>
+
+                <div id='PayBill' title='Pay Your Bill' class='panel' data-load='showBill'>
+   <h3>Pay Your Bill</h3>
+   <h2>Please Confirm your Order</h2>
+   <ul id="billList" class="orderList">
+    </ul>
+   <div class="totalPrice" id="totalBillPrice" style="display: none;">
+   </div>
+   <h2>Enter Credit Card Information</h2>
+   <div class="form">
+     <div><label>Name on card</label><input type="text" name="name" id="formName"/></div>
+     <div><label>Card zip code</label><input type="text" name="zip" id="formZip"/></div>
+     <div><label>Card number</label><input type="text" name="card" id="formCard" size="16" maxlength="16"/></div>
+     <div class='expiration'><label>Expiration (mm/yy)</label><input type="text" name="month" id="formMonth" size="2" maxlength="2"/><input type="text" name="year" id="formYear" size="2" maxlength="2"/></div>
+     <!-- <div><label>Security code</label><input type="text" name="cvv" id="formCvv" size="4" maxlength="4"/></div> -->
+     <input type="hidden" name="amount" id="formAmount"/>
+     <input type="hidden" name="tip" id="formTip" value="0.00"/>
+   </div>
+   <input type="button" class="button" id="authorizePaymentButton" style="display: none;" value="Submit" onclick="return authorizePayment();"/>
+    </div>
+
+
+            </div>
+            <div id='navbar'>
+   <a href='#main' data-transition='slide' class='home'>Start Over</a>
+   <a href='#ReviewOrder' data-transition='slide' class='basket'>My Order</a>
+   <a href='#PayBill' data-transition='slide' class='stack'>Pay Bill</a>
+fg</div>
+<nav><div class='title'>Home</div><ul>
+<li><a href='#main' data-transition='slide'>Home</a></li>
+<li><a href='#ReviewOrder' data-transition='slide'>My Order</a></li>
+<li><a href='#PayBill' data-transition='slide'>Pay Bill</a></li>
+</nav>
+
+            
+        </div>
+    </body>
+</html>
