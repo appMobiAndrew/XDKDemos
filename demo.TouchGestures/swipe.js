@@ -39,8 +39,8 @@ function addSwipeListener(el, listener)
                 
                 tempy = parseInt(tempy/3);
                 
-                x$("#cardFront").setStyle("webkitTransform","rotate(" + ((rotation + tempy) % 360) + "deg)");
-                x$("#cardBack").setStyle("webkitTransform","rotate(" + ((rotation + tempy) % 360) + "deg)");
+                $("#cardFront").css("webkitTransform","rotate(" + ((rotation + tempy) % 360) + "deg)");
+                $("#cardBack").css("webkitTransform","rotate(" + ((rotation + tempy) % 360) + "deg)");
             }
         }
     }

@@ -26,7 +26,7 @@ Copyright (c) 2011, 2012, 2013 Intel Corporation
 -->
 <head>
     <title>Orientation</title>
-	<script type="text/javascript" src="http://localhost:58888/_appMobi/appmobi.js"></script> 
+	<script type="text/javascript" charset="utf-8" src="_appMobi/appmobi_local_bootstrap.js"></script>
 	<style>
 		.dataCategory {
 			color : #FFFFFF;
@@ -68,12 +68,12 @@ Copyright (c) 2011, 2012, 2013 Intel Corporation
 			var orient = document.getElementById('orient');
 
 			if(orientation==0||orientation==180) {
-				bg.src='app_bg_port.jpg';
-				note.src='note_port.png';
+				bg.src='images/app_bg_port.jpg';
+				note.src='images/note_port.png';
 				note.style.top='134px';
 			} else {
-				bg.src='app_bg_ls.jpg';
-				note.src='note_ls.png';
+				bg.src='images/app_bg_ls.jpg';
+				note.src='images/note_ls.png';
 				note.style.top='102px';
 			}
 			orient.innerHTML = orientation;
