@@ -1,0 +1,10 @@
+{
+"reponame":"demo.Podcast",
+"title":"Podcast Player",
+"tooltip":"A demonstration of the integrated audio player",
+"description":"This demonstration illustrates how to use the integrated audio player features of hybrid apps built using the Intel&reg; XDK.",
+"articleUrl":"",
+"keywords":["demo","podcast","audio"],
+"visible" : "true",
+"highlights" : ["podcast Player","audio","audio events"]
+}

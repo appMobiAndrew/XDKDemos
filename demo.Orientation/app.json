@@ -1,0 +1,10 @@
+{
+"reponame":"demo.Orientation",
+"title":"Orientation Demonstration",
+"tooltip":"A demonstration of how to deal with device orientation changes",
+"description":"This demonstration illustrates how to use the viewport and orientation change features of hybrid apps built using the Intel&reg; XDK.",
+"articleUrl":"",
+"keywords":["demo","viewport","orientation"],
+"visible" : "true",
+"highlights" : ["viewport","orientation","display size"]
+}

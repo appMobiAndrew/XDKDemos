@@ -1,0 +1,10 @@
+{
+"reponame":"demo.Accelerometer",
+"title":"Accelerometer Demonstration",
+"tooltip":"This demo shows how to read the accelerometer of the device",
+"description"This demonstration application will use the JavaScript bridge to read the device's current accelerometer data and act on it.",
+"articleUrl":"",
+"keywords":["demo","accelerometer","orientation"],
+"visible" : "true",
+"highlights" : ["demo","accelerometer"]
+}

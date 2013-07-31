@@ -1,0 +1,10 @@
+{
+"reponame":"demo.TouchGestures",
+"title":"Touch Gestures",
+"tooltip":"A demonstration of swipe gestures and CSS animation",
+"description":"A demonstration of swipe gestures written using HTML5, JavaScript, CSS3 and App Framework.",
+"articleUrl":"",
+"keywords":["demo","gestures","swipe"],
+"visible" : "true",
+"highlights" : ["Swipe gestures", "Animation"]
+}

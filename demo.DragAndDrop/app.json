@@ -1,0 +1,10 @@
+{
+"reponame":"demo.DragAndDrop",
+"title":"Drag and Drop Demonstration",
+"tooltip":"This demonstration shows one solution to dragging elements on the screen using JavaScript touch events.",
+"description"This app demonstrates one way to drag and drop elements on the screen.",
+"articleUrl":"",
+"keywords":["demo","drag","drop","touch","events"],
+"visible" : "true",
+"highlights" : ["demo","touch events","drag and drop"]
+}
