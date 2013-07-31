@@ -1,0 +1,13 @@
+{
+"reponame":"sample-Mashery_Rotten_Tomatoes",
+"title":"Mashery Rotten Tomatoes API",
+"tooltip":"A demonstration of the Mashery Rotten Tomatoes API",
+"description":"This demo App provides a way to see the Rotten Tomatoes API in action. 
+It's built using the Intel&reg; Cross Platform Development Kit (XDK). 
+The Intel XDK lets you create mobile apps for smartphones and tablets using
+standard web languages (HTML5, CSS, and JavaScript).",
+"articleUrl":"",
+"keywords":["demo","API","Mashery"],
+"visible" : "true",
+"highlights" : ["demo","API","Mashery"]
+}
