@@ -1,5 +1,5 @@
 {
-"reponame":"demo.BasicAnimation",
+"reponame":"sample-BasicAnimation",
 "title":"Basic Animation",
 "tooltip":"This demo shows how to move items across the screen",
 "description"Using App Framework, this demo application animates the movement of chips as they slide smoothly across the screen.",

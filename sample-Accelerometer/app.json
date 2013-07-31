@@ -1,5 +1,5 @@
 {
-"reponame":"demo.Accelerometer",
+"reponame":"sample-Accelerometer",
 "title":"Accelerometer Demonstration",
 "tooltip":"This demo shows how to read the accelerometer of the device",
 "description"This demonstration application will use the JavaScript bridge to read the device's current accelerometer data and act on it.",

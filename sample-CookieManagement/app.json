@@ -1,5 +1,5 @@
 {
-"reponame":"demo.Cookies",
+"reponame":"sample-Cookies",
 "title":"Local Storage Demonstration",
 "tooltip":"This demo shows how to access local storage",
 "description"This app demonstrates how to use the JavaScript bridge library to access local storage on a hybrid app.",

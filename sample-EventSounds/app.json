@@ -1,5 +1,5 @@
 {
-"reponame":"demo.EventSounds",
+"reponame":"sample-EventSounds",
 "title":"Sound Demonstration",
 "tooltip":"This demonstration will use the JavaScript bridge to play a sound through a native API in a hybrid app",
 "description":"Based on an event thrown by a touch event, this demonstration will play a sound using the JavaScript bridge library.",

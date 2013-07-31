@@ -1,0 +1,10 @@
+{
+"reponame":"sample-Shoutcast",
+"title":"Shoutcast Player",
+"tooltip":"A demonstration of the integrated Shoutcast player",
+"description":"This demonstration illustrates how to use the integrated Shoutcast player features of hybrid apps built using the Intel&reg; XDK.",
+"articleUrl":"",
+"keywords":["demo","Shoutcast","audio"],
+"visible" : "true",
+"highlights" : ["Shoutcast Player","audio","audio events"]
+}
