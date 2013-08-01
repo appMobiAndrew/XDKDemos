@@ -63,7 +63,7 @@ Copyright (c) 2011, 2012, 2013 Intel Corporation
 	    //given that we are doing an new webkit animation every 100th of a second based on
 	    //accelerometer readings - so no need to 
 	    //invoke the extra overhead of telling the DOM that the element is being repositioned constantly by resetting the CSS
-	    //pixelLeft and pixelTop of the cokecan.
+	    //pixelLeft and pixelTop of the sodacan.
 	    var label = null;
 	    var container = null;
 	    var current_left = 0;
@@ -319,8 +319,8 @@ Copyright (c) 2011, 2012, 2013 Intel Corporation
 
 	    function onBodyLoad() {
 	        metatag = document.getElementById("meta_view");
-	        label = document.getElementById("img_cokelabel");
-	        container = document.getElementById("div_cokecan");
+	        label = document.getElementById("img_sodalabel");
+	        container = document.getElementById("div_sodacan");
 	        masthead = document.getElementById("img_masthead");
 	    }
 
@@ -344,12 +344,24 @@ Copyright (c) 2011, 2012, 2013 Intel Corporation
 </head> 
 <body onload="onBodyLoad()" background="images/app_bg.jpg"> 
 
-<div id="div_cokecan" style="position:absolute;width:178px;height:336px;overflow:hidden;-webkit-transform:  scale(0.85);">
-    <div id="img_cokecan" style="position:absolute;left:-2px;top:-1px;z-index:101;">
-     <img  src="images/coke-can-new_shadow.png" alt=""  /> 
+<div id="div_sodacan" style="position:absolute;width:178px;height:336px;overflow:hidden;-webkit-transform:  scale(0.85);">
+    <div id="img_sodacan" style="position:absolute;left:-2px;top:-1px;z-index:101;">
+	
+     <img  src="images/can.png" alt=""  /> 
+<!--
+     <img  src="images/can_doug.png" alt=""  /> 
+-->	 
+	 
      </div>
      <div  style="position:absolute;left:2px;top:51px;z-index:100;width:164px;height:237px;overflow:hidden" >
-	    <img id="img_cokelabel" src="images/appmobi-label.jpg" style="position:absolute;" alt="" /> 
+	 
+	    <img id="img_sodalabel" src="images/generic-label.jpg" style="position:absolute;" alt="" /> 
+
+<!--
+	    <img id="img_sodalabel" src="images/doug-label.jpg" style="position:absolute;" alt="" /> 
+-->
+		
+		
      </div>
 </div> 
 
