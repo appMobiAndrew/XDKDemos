@@ -1,8 +1,8 @@
 {
-"reponame":"sample-BasicNavigation",
+"reponame":"sample-Flashlight",
 "title":"Flashlight",
 "tooltip":"A variation on a basic flashlight app",
-"description"Use a touch to light up the screen with this basic flashlight app.",
+"description"This sample is a variation on the basic flashlight app.  Touch the lighter to light of extinguish the flame.",
 "articleUrl":"",
 "keywords":["demo","event","flashlight"],
 "visible" : "true",

@@ -1,6 +1,6 @@
 {
-"reponame":"sample-Mashery_Rotten_Tomatoes",
-"title":"Mashery Rotten Tomatoes API",
+"reponame":"sample-masheryweatherbug",
+"title":"Mashery Weatherbug API",
 "tooltip":"A demonstration of the Mashery WeatherBug API",
 "description":"This demo App provides a way to see the WeatherBug API in action. 
 It's built using the Intel&reg; Cross Platform Development Kit (XDK). 

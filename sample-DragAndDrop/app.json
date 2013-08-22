@@ -2,7 +2,7 @@
 "reponame":"sample-DragAndDrop",
 "title":"Drag and Drop Demonstration",
 "tooltip":"This demonstration shows one solution to dragging elements on the screen using JavaScript touch events.",
-"description"This app demonstrates one way to drag and drop elements on the screen.",
+"description"This app demonstrates one way to drag and drop elements on the screen. It features JavaScript touch events and absolute positioning of HTML elements.",
 "articleUrl":"",
 "keywords":["demo","drag","drop","touch","events"],
 "visible" : "true",
