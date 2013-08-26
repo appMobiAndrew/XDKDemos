@@ -5,6 +5,9 @@
 "description"This app demonstrates one way to drag and drop elements on the screen. It features JavaScript touch events and absolute positioning of HTML elements.",
 "articleUrl":"",
 "keywords":["demo","drag","drop","touch","events"],
-"visible" : "true",
+"visible" : "false",
 "highlights" : ["demo","touch events","drag and drop"]
+"apppreview":"true",
+"appname":"demo.draganddropnew",
+"relname":"4.0.0"
 }

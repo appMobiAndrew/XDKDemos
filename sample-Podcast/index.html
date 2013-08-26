@@ -28,7 +28,7 @@
 
     <title>Podcast</title>
 
-    <script type="text/javascript" charset="utf-8" src="_appMobi/appmobi_local_bootstrap.js"></script>
+    <script src='intelxdk.js'></script> 
 
 
         <style type="text/css">
@@ -107,7 +107,7 @@
         function dataFailed(xmlData)
         {
 			console.log("dataFailed");
-            AppMobi.notifications.alert(xmlData,"Podcast Failure","OK");
+            intel.xdk.notifications.alert(xmlData,"Podcast Failure","OK");
         }
                         
         function dataLoaded(strRequestResponse)
@@ -185,7 +185,7 @@
                     boolDebounce = true;
                 
                     //load the podcast
-                    AppMobi.player.playPodcast(podcastURL);
+                    intel.xdk.player.playPodcast(podcastURL);
                     setTimeout("boolDebounce = false",5000);
                 }
             }
@@ -194,39 +194,35 @@
 
         
         //*** Device Ready Code *******************
-        //This event handler is fired once the AppMobi libraries are ready
         function onDeviceReady()
         {
 			console.log("in onDeviceReady");
 				
 			//GET method example parameters
-			var parameters = new AppMobi.Device.RemoteDataParameters();
+			var parameters = new intel.xdk.Device.RemoteDataParameters();
 			parameters.url = podcastRSSURL;
 			parameters.id = '555';
 
 			//get remote data
-			AppMobi.device.getRemoteDataExt(parameters);
+			intel.xdk.device.getRemoteDataExt(parameters);
 		
-            //use AppMobi viewport
-            AppMobi.display.useViewport(iPortraitWidth,iLandscapeWidth);
-        
             //lock orientation
-            AppMobi.device.setRotateOrientation("portrait");
-            AppMobi.device.setAutoRotate(false);
+            intel.xdk.device.setRotateOrientation("portrait");
+            intel.xdk.device.setAutoRotate(false);
             
             //manage power
-            AppMobi.device.managePower(true,false);
+            intel.xdk.device.managePower(true,false);
                 
             try
             {
                 //for playing podcasts
-                document.addEventListener("appMobi.player.audio.stop",onPodcastComplete,false);
-                document.addEventListener("appMobi.player.audio.error",onPodcastError,false);
+                document.addEventListener("intel.xdk.player.audio.stop",onPodcastComplete,false);
+                document.addEventListener("intel.xdk.player.audio.error",onPodcastError,false);
             }
             catch(e){}
 			
 			//hide splash screen
-			AppMobi.device.hideSplashScreen();
+			intel.xdk.device.hideSplashScreen();
 
 		
 
@@ -236,7 +232,7 @@
 
 
 		//data event handler
-		document.addEventListener("appMobi.device.remote.data",function(event){
+		document.addEventListener("intel.xdk.device.remote.data",function(event){
 			if(event.success==false)
 			   {
 				  console.log("data failed");
@@ -251,8 +247,7 @@
 
 
 
-        //initial event handler to detect when appMobi is ready to roll
-        document.addEventListener("appMobi.device.ready",onDeviceReady,false);
+        document.addEventListener("intel.xdk.device.ready",onDeviceReady,false);
         
         //*** Prevent Default Scrolling ******
         preventDefaultScroll = function(event) {

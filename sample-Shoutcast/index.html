@@ -154,7 +154,7 @@ Copyright (c) 2011, 2012, 2013 Intel Corporation
 	</style>
 
 
-    <script type="text/javascript" charset="utf-8" src="_appMobi/appmobi_local_bootstrap.js"></script>
+    <script src='intelxdk.js'></script> 
     <script type="text/javascript" charset="utf-8">
 		var jazzURL="http://64.5.130.43:80/";
 		
@@ -178,28 +178,28 @@ Copyright (c) 2011, 2012, 2013 Intel Corporation
 				var log = document.getElementById('log');
 				prependToLog(log, buildMessage(e));
 				
-				if (e.type=="appMobi.player.shoutcast.start"){
+				if (e.type=="intel.xdk.player.shoutcast.start"){
 				    document.getElementById("play").src="images/Pause.png";
 				    boolPlaying=true;
 				}
-				if (e.type=="appMobi.player.shoutcast.stop"||e.type=="appMobi.player.shoutcast.error"){
+				if (e.type=="intel.xdk.player.shoutcast.stop"||e.type=="intel.xdk.player.shoutcast.error"){
 				    document.getElementById("play").src="images/Play.png";
 				    boolPlaying=false;
 				}
-				if (e.type=="appMobi.player.shoutcast.pause"){
+				if (e.type=="intel.xdk.player.shoutcast.pause"){
 				    document.getElementById("play").src="images/Play.png";
 				    boolPaused=true;
 				}
 				
-				if (e.type=="appMobi.player.station.start"){
+				if (e.type=="intel.xdk.player.station.start"){
 				    document.getElementById("play").src="images/Pause.png";
 				    boolPlaying=true;
 				}
-				if (e.type=="appMobi.player.station.stop"||e.type=="appMobi.player.station.error"){
+				if (e.type=="intel.xdk.player.station.stop"||e.type=="intel.xdk.player.station.error"){
 				    document.getElementById("play").src="images/Play.png";
 				    boolPlaying=false;
 				}
-				if (e.type=="appMobi.player.station.pause"){
+				if (e.type=="intel.xdk.player.station.pause"){
 				    document.getElementById("play").src="images/Play.png";
 				    boolPaused=true;
 				}
@@ -214,8 +214,8 @@ Copyright (c) 2011, 2012, 2013 Intel Corporation
 				var log = document.getElementById('log');
 				prependToLog(log, buildMessage(e));
 
-				if(e.type=='appMobi.device.resume') {
-					prependToLog(log, "lastPlaying: " + AppMobi.device.lastPlaying);
+				if(e.type=='intel.xdk.device.resume') {
+					prependToLog(log, "lastPlaying: " + intel.xdk.device.lastPlaying);
 				}
 				
 
@@ -229,10 +229,10 @@ Copyright (c) 2011, 2012, 2013 Intel Corporation
 			try {
 				var info = document.getElementById('trackInfo');
 				info.innerHTML =
-					"Artist: " + AppMobi.playingtrack.artist + "<br>"+
-					"Title: " + AppMobi.playingtrack.title + "<br>"+
-					"Album: " + AppMobi.playingtrack.album + "<br>" +
-					"<img src='" + AppMobi.playingtrack.imageurl + "'>";
+					"Artist: " + intel.xdk.playingtrack.artist + "<br>"+
+					"Title: " + intel.xdk.playingtrack.title + "<br>"+
+					"Album: " + intel.xdk.playingtrack.album + "<br>" +
+					"<img src='" + intel.xdk.playingtrack.imageurl + "'>";
 			} catch(e){
 				alert('something bad happened in trackChangeListener: ' + e.message);
 			}
@@ -243,11 +243,11 @@ Copyright (c) 2011, 2012, 2013 Intel Corporation
 			var btn = document.getElementById('btn16');
 			if(defaultColors) {
 				//red
-				AppMobi.player.setColors('FFC0C0', 'C00000', 'FF4040', 'FF8080');
+				intel.xdk.player.setColors('FFC0C0', 'C00000', 'FF4040', 'FF8080');
 				btn.innerHTML = "Set progress blue";
 			} else {
 				//blue
-				AppMobi.player.setColors('C0C0FF', '0000C0', '4040FF', '8080FF');
+				intel.xdk.player.setColors('C0C0FF', '0000C0', '4040FF', '8080FF');
 				btn.innerHTML = "Set progress red";
 			}
 
@@ -257,9 +257,9 @@ Copyright (c) 2011, 2012, 2013 Intel Corporation
 		var defaultPosition = true;
 		function setPosition() {
 			if(defaultPosition) {
-				AppMobi.player.setPosition(100,100,100,100);
+				intel.xdk.player.setPosition(100,100,100,100);
 			} else {
-				AppMobi.player.setPosition(0,0,0,0);
+				intel.xdk.player.setPosition(0,0,0,0);
 			}
 			defaultPosition=!defaultPosition;
 		}
@@ -269,32 +269,28 @@ Copyright (c) 2011, 2012, 2013 Intel Corporation
 			var volumeValue = parseInt(volume.innerHTML.substring(volume.innerHTML.lastIndexOf(":")+1));
 			volumeValue += delta;
 			if(volumeValue>=0&&volumeValue<=100) {
-				AppMobi.player.volume(volumeValue);
+				intel.xdk.player.volume(volumeValue);
 				volume.innerHTML = "&nbsp;&nbsp;&nbsp;Volume: " + volumeValue;
 			}
 		}
 
 		function setVolume(volumeValue) {
 			var volume = document.getElementById('volume');
-			AppMobi.player.volume(volumeValue);
+			intel.xdk.player.volume(volumeValue);
 			volume.innerHTML = "&nbsp;&nbsp;&nbsp;Volume: " + volumeValue;
 		}
 
 		function deviceReadyListener(e) {
-
-			
-        	//use AppMobi viewport
-			AppMobi.display.useViewport(320,480);
         
             //lock orientation
-            AppMobi.device.setRotateOrientation("portrait");
-            AppMobi.device.setAutoRotate(false);
+            intel.xdk.device.setRotateOrientation("portrait");
+            intel.xdk.device.setAutoRotate(false);
             
             //manage power
-            AppMobi.device.managePower(true,false);
+            intel.xdk.device.managePower(true,false);
 			setVolume(100);		
 			
-			if(AppMobi.device.platform.toUpperCase()=="ANDROID")
+			if(intel.xdk.device.platform.toUpperCase()=="ANDROID")
 			{
 			    //fix the font on Android devices
 			    document.getElementById("log").style.fontFamily="EurostileANDROID";
@@ -303,40 +299,40 @@ Copyright (c) 2011, 2012, 2013 Intel Corporation
 			}	
 			
 			//hide splash screen
-			AppMobi.device.hideSplashScreen();
+			intel.xdk.device.hideSplashScreen();
 			
 		}
 
         var boolPlaying = false;
         var boolPaused = false;
-		document.addEventListener('appMobi.device.ready', deviceReadyListener, false);
+		document.addEventListener('intel.xdk.device.ready', deviceReadyListener, false);
 
-		document.addEventListener('appMobi.player.hide', playerEventListener, false);
-		document.addEventListener('appMobi.player.show', playerEventListener, false);
+		document.addEventListener('intel.xdk.player.hide', playerEventListener, false);
+		document.addEventListener('intel.xdk.player.show', playerEventListener, false);
 
-		document.addEventListener('appMobi.player.shoutcast.start', playerEventListener, false);
-		document.addEventListener('appMobi.player.shoutcast.play', playerEventListener, false);
-		document.addEventListener('appMobi.player.shoutcast.pause', playerEventListener, false);
-		document.addEventListener('appMobi.player.shoutcast.stop', playerEventListener, false);
-		document.addEventListener('appMobi.player.shoutcast.busy', playerEventListener, false);
-		document.addEventListener('appMobi.player.shoutcast.error', playerEventListener, false);
+		document.addEventListener('intel.xdk.player.shoutcast.start', playerEventListener, false);
+		document.addEventListener('intel.xdk.player.shoutcast.play', playerEventListener, false);
+		document.addEventListener('intel.xdk.player.shoutcast.pause', playerEventListener, false);
+		document.addEventListener('intel.xdk.player.shoutcast.stop', playerEventListener, false);
+		document.addEventListener('intel.xdk.player.shoutcast.busy', playerEventListener, false);
+		document.addEventListener('intel.xdk.player.shoutcast.error', playerEventListener, false);
 
-		document.addEventListener('appMobi.player.podcast.start', playerEventListener, false);
-		document.addEventListener('appMobi.player.podcast.play', playerEventListener, false);
-		document.addEventListener('appMobi.player.podcast.pause', playerEventListener, false);
-		document.addEventListener('appMobi.player.podcast.stop', playerEventListener, false);
-		document.addEventListener('appMobi.player.podcast.busy', playerEventListener, false);
-		document.addEventListener('appMobi.player.podcast.error', playerEventListener, false);
+		document.addEventListener('intel.xdk.player.podcast.start', playerEventListener, false);
+		document.addEventListener('intel.xdk.player.podcast.play', playerEventListener, false);
+		document.addEventListener('intel.xdk.player.podcast.pause', playerEventListener, false);
+		document.addEventListener('intel.xdk.player.podcast.stop', playerEventListener, false);
+		document.addEventListener('intel.xdk.player.podcast.busy', playerEventListener, false);
+		document.addEventListener('intel.xdk.player.podcast.error', playerEventListener, false);
 		
-		document.addEventListener('appMobi.player.station.start', playerEventListener, false);
-		document.addEventListener('appMobi.player.station.play', playerEventListener, false);
-		document.addEventListener('appMobi.player.station.pause', playerEventListener, false);
-		document.addEventListener('appMobi.player.station.stop', playerEventListener, false);
-		document.addEventListener('appMobi.player.station.busy', playerEventListener, false);
-		document.addEventListener('appMobi.player.station.error', playerEventListener, false);
+		document.addEventListener('intel.xdk.player.station.start', playerEventListener, false);
+		document.addEventListener('intel.xdk.player.station.play', playerEventListener, false);
+		document.addEventListener('intel.xdk.player.station.pause', playerEventListener, false);
+		document.addEventListener('intel.xdk.player.station.stop', playerEventListener, false);
+		document.addEventListener('intel.xdk.player.station.busy', playerEventListener, false);
+		document.addEventListener('intel.xdk.player.station.error', playerEventListener, false);
 		
-		document.addEventListener('appMobi.device.suspend', backgroundListener, false);
-		document.addEventListener('appMobi.device.resume', backgroundListener, false);
+		document.addEventListener('intel.xdk.device.suspend', backgroundListener, false);
+		document.addEventListener('intel.xdk.device.resume', backgroundListener, false);
 
 		function checkSel(obj) {
 			var ind = obj.selectedIndex;
@@ -348,12 +344,12 @@ Copyright (c) 2011, 2012, 2013 Intel Corporation
 		    {
 		        if (boolPaused==false)
 		        {
-		            AppMobi.player.pause();
+		            intel.xdk.player.pause();
 		            document.getElementById("play").src="images/Play.png";
 		        }
 		        else
 		        {
-		            AppMobi.player.play(); 
+		            intel.xdk.player.play(); 
 		            document.getElementById("play").src="images/Pause.png";		        
 		        }
 		    } 
@@ -366,14 +362,14 @@ Copyright (c) 2011, 2012, 2013 Intel Corporation
 
 		function musicshowplayer()
 		{
-		    AppMobi.player.startShoutcast(jazzURL,true);
-		    AppMobi.player.show();
+		    intel.xdk.player.startShoutcast(jazzURL,true);
+		    intel.xdk.player.show();
 		}
 		
 		
 		function music()
 		{
-		    AppMobi.player.startShoutcast(jazzURL,false);
+		    intel.xdk.player.startShoutcast(jazzURL,false);
 		}
 
 		
@@ -395,9 +391,9 @@ Copyright (c) 2011, 2012, 2013 Intel Corporation
 <div id="apDiv2">
 
   <img id="play" ontouchstart="playbutton();" src="images/Play.png"/>
-  <img id="apDiv5" ontouchstart="AppMobi.player.stop();"src="images/Stop.png"/>
-  <img id="apDiv6" ontouchstart="AppMobi.player.rewind();"src="images/Back.png"/>
-  <img id="apDiv7" ontouchstart="AppMobi.player.ffwd();"src="images/Forward.png"/>
+  <img id="apDiv5" ontouchstart="intel.xdk.player.stop();"src="images/Stop.png"/>
+  <img id="apDiv6" ontouchstart="intel.xdk.player.rewind();"src="images/Back.png"/>
+  <img id="apDiv7" ontouchstart="intel.xdk.player.ffwd();"src="images/Forward.png"/>
   <img id="apDiv9" ontouchstart="adjustVolume(10);"src="images/VolumeUp.png"/>
   <img id="apDiv8" ontouchstart="adjustVolume(-10);"src="images/VolumeDown.png"/>
   <img id="apDiv10" ontouchstart="musicshowplayer();"src="images/ShowPlayer.png"/>

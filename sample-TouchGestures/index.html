@@ -29,7 +29,7 @@ Copyright (c) 2011, 2012, 2013 Intel Corporation
 
     <title>Touch Gestures</title>
 
-        <script type="text/javascript" charset="utf-8" src="_appMobi/appmobi_local_bootstrap.js"></script>
+        <script src='intelxdk.js'></script> 
 		<script src="appframework.min.js" type="text/javascript"></script>
 		<script src="plugins/af.css3animate.js" type="text/javascript"></script>	
         <script type="text/javascript" charset="utf-8" src="swipe.js"></script>
@@ -139,26 +139,20 @@ Copyright (c) 2011, 2012, 2013 Intel Corporation
         
         
         //*** Device Ready Code **********
-        //This event handler is fired once the AppMobi libraries are ready
-        //AppMobi is ready to roll
         function onDeviceReady()
         {
-           //user AppMobi viewport
-            AppMobi.display.useViewport(iPortraitWidth,iLandscapeWidth);
-        
             //lock orientation
-            AppMobi.device.setRotateOrientation("portrait");
-            AppMobi.device.setAutoRotate(false);
+            intel.xdk.device.setRotateOrientation("portrait");
+            intel.xdk.device.setAutoRotate(false);
             
             //manage power
-            AppMobi.device.managePower(true,false);
+            intel.xdk.device.managePower(true,false);
 			
 			//hide splash screen
-			AppMobi.device.hideSplashScreen();			
+			intel.xdk.device.hideSplashScreen();			
         }
         
-        //initial event handler to detect when appMobi is ready to roll
-		document.addEventListener("appMobi.device.ready",onDeviceReady,false); 
+		document.addEventListener("intel.xdk.device.ready",onDeviceReady,false); 
         
         </script>
  
@@ -172,7 +166,7 @@ Copyright (c) 2011, 2012, 2013 Intel Corporation
     <img id="cardBack" src="images/card_back.png" style="position:absolute; top:155px; left:155px;" />
     <img id="cardFront" src="images/card_front.png" style="position:absolute; top:155px; left:155px; display:none;" />
     
-    <span id="info" style="background-color:#000000;opacity:0.6;font-family:Arial;font-size:24pt;width:740px;top:950px;left:10px;position:absolute;text-align:center;"><span style="color:White;font-family:Arial;font-size:20pt;">Drag vertically to rotate the card, swipe horizontally to flip it</span></span>
+    <span id="info" style="background-color:#000000;opacity:0.6;font-family:Arial;width:740px;top:950px;left:10px;position:absolute;text-align:center;"><span style="color:White;font-family:Arial;">Drag vertically to rotate the card, swipe horizontally to flip it</span></span>
 
     </body>
 </html>

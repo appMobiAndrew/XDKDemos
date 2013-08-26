@@ -5,6 +5,9 @@
 "description":"This demonstration illustrates how to use the integrated audio player features of hybrid apps built using the Intel&reg; XDK.",
 "articleUrl":"",
 "keywords":["demo","podcast","audio"],
-"visible" : "true",
+"visible" : "false",
 "highlights" : ["podcast Player","audio","audio events"]
+"apppreview":"true",
+"appname":"demo.podcastnew",
+"relname":"4.0.0"
 }

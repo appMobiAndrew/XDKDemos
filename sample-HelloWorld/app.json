@@ -5,6 +5,9 @@
 "description":"This demonstration illustrates how to set up a basic application with the JavaScript bridge library to access native features of the device.",
 "articleUrl":"",
 "keywords":["demo","audio","vibrate","event","hybrid app"],
-"visible" : "true",
-"highlights" : ["audio","vibrate","event","hybrid app"]
+"visible" : "false",
+"highlights" : ["audio","vibrate","event","hybrid app"],
+"apppreview":"true",
+"appname":"demo.helloworldnew",
+"relname":"4.0.0"
 }

@@ -5,6 +5,9 @@
 "description"This sample is a variation on the basic flashlight app.  Touch the lighter to light of extinguish the flame.",
 "articleUrl":"",
 "keywords":["demo","event","flashlight"],
-"visible" : "true",
+"visible" : "false",
 "highlights" : ["demo","event"]
+"apppreview":"true",
+"appname":"demo.flashlightnew",
+"relname":"4.0.0"
 }

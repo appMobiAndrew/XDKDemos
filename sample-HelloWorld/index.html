@@ -28,7 +28,7 @@ Copyright (c) 2011, 2012, 2013 Intel Corporation
 <title>Hello World</title>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     
-    <script type="text/javascript" charset="utf-8" src="_appMobi/appmobi_local_bootstrap.js"></script>
+	<script src='intelxdk.js'></script> 
     <!--
 	<script type="text/javascript" charset="utf-8" src="camera.js"></script> 
 	-->
@@ -41,7 +41,7 @@ Copyright (c) 2011, 2012, 2013 Intel Corporation
         input, textarea  { -webkit-user-select:text; } 
         body  
         {
-            font-family:Arial;font-size:32pt;
+            font-family:Arial;
             background-image:url('images/background.jpg');
         }
         button 
@@ -68,30 +68,22 @@ Copyright (c) 2011, 2012, 2013 Intel Corporation
     window.document.addEventListener('touchmove', preventDefaultScroll, false);
         
     //*** Device Ready Code **********
-    //This event handler is fired once the AppMobi libraries are ready
-    //AppMobi is ready to roll
+    //This event handler is fired once the JavaScript bridge library is ready
     function onDeviceReady()
     {
-        //use AppMobi viewport
-        AppMobi.display.useViewport(768,1024);
-    
         //lock orientation
-        AppMobi.device.setRotateOrientation("portrait");
-        AppMobi.device.setAutoRotate(false);
+        intel.xdk.device.setRotateOrientation("portrait");
+        intel.xdk.device.setAutoRotate(false);
         
         //manage power
-        AppMobi.device.managePower(true,false);
+        intel.xdk.device.managePower(true,false);
 		
 		//hide splash screen
-		AppMobi.device.hideSplashScreen();		
+		intel.xdk.device.hideSplashScreen();		
     }
     
-    //initial event handler to detect when appMobi is ready to roll
-    document.addEventListener("appMobi.device.ready",onDeviceReady,false); 
+    document.addEventListener("intel.xdk.device.ready",onDeviceReady,false); 
       
-	var oldTC="This sample has detected that you are not using the most up to date appMobi test container.  This sample's functionality may be compromised as a result.  Touch OK to continue. ";
-	window.addEventListener("load", function(){ if (typeof(AppMobiInit) != 'object'){ alert(oldTC); }}, false);
-
         
         
     //**** These commands are just samples that can be deleted from a hello world app ****//    
@@ -100,7 +92,7 @@ Copyright (c) 2011, 2012, 2013 Intel Corporation
     {
         try
         {
-            AppMobi.notification.beep(1);
+            intel.xdk.notification.beep(1);
         }
         catch(e) {}
     }
@@ -109,7 +101,7 @@ Copyright (c) 2011, 2012, 2013 Intel Corporation
     {
         try
         {
-            AppMobi.notification.vibrate();
+            intel.xdk.notification.vibrate();
         }
         catch(e) {} 
     }
@@ -118,7 +110,7 @@ Copyright (c) 2011, 2012, 2013 Intel Corporation
     {
         try
         {
-            AppMobi.player.playSound("sounds/bark02.mp3"); 
+            intel.xdk.player.playSound("sounds/bark02.mp3"); 
         }
         catch(e) { } 
     }

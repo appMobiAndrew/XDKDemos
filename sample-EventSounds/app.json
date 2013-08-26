@@ -5,6 +5,9 @@
 "description":"Based on an event thrown by a touch event, this demonstration will play a sound using the JavaScript bridge library.",
 "articleUrl":"",
 "keywords":["demo","sound","hybrid app"],
-"visible" : "true",
+"visible" : "false",
 "highlights" : ["demo","sound","hybrid app"]
+"apppreview":"true",
+"appname":"demo.eventsoundsnew",
+"relname":"4.0.0"
 }
